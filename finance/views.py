@@ -7,14 +7,22 @@ from finance.serializers import (
     ChartAccountSerializer,
     ChartAccountCreateSerializer,
     BankAccountEntriesSerializer,
+    BankAccountEntriesCreateSerializer,
 )
 from rest_framework import generics
 from finance.service import create_initial_bank_entry, create_transaction_with_entry
 from decimal import Decimal
 
+## ---------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------
+## BankAccount Views
+
 
 class BankAccountCreateView(generics.CreateAPIView):
     serializer_class = BankAccountCreateSerializer
+
+    ## Cria conta bancaria com transacao incial
 
     def perform_create(self, serializer):
         bank_account = serializer.save()
@@ -22,9 +30,21 @@ class BankAccountCreateView(generics.CreateAPIView):
         create_initial_bank_entry(bank_account, initial_balance)
 
 
-class BankAccountEntriesListView(generics.ListAPIView):
-    queryset = models.BankAccountEntries.objects.all()
-    serializer_class = BankAccountEntriesSerializer
+class BankAccountRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.BankAccount.objects.all()
+    serializer_class = BankAccountSerializer
+    lookup_url_kwarg = "id"
+
+
+class BankAccountListView(generics.ListAPIView):
+    queryset = models.BankAccount.objects.all()
+    serializer_class = BankAccountSerializer
+
+
+## ---------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------
+## ChartAccount Views
 
 
 class ChartAccountListView(generics.ListAPIView):
@@ -38,14 +58,15 @@ class ChartAccountRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView
     lookup_url_kwarg = "id"
 
 
-class CharAccountCreateView(generics.CreateAPIView):
+class ChartAccountCreateView(generics.CreateAPIView):
     queryset = models.ChartAccount.objects.all()
     serializer_class = ChartAccountCreateSerializer
 
 
-class BankAccountListView(generics.ListAPIView):
-    queryset = models.BankAccount.objects.all()
-    serializer_class = BankAccountSerializer
+## ---------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------
+## Transactions Views
 
 
 class TransactionListView(generics.ListAPIView):
@@ -64,3 +85,18 @@ class TransactionCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         create_transaction_with_entry(serializer)
+
+
+## ---------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------
+## BankAccountEntries Views
+
+
+class BankAccountEntriesListView(generics.ListAPIView):
+    queryset = models.BankAccountEntries.objects.all()
+    serializer_class = BankAccountEntriesSerializer
+
+
+class BankAccountEntriesCreateView(generics.CreateAPIView):
+    serializer_class = BankAccountEntriesCreateSerializer
