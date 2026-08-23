@@ -8,38 +8,72 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Property',
+            name="Property",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('description', models.CharField(max_length=255)),
-                ('property_type', models.PositiveIntegerField(choices=[(0, 'Terreno'), (1, 'Residencial'), (2, 'Comercial')], default=0)),
-                ('street', models.CharField(max_length=255)),
-                ('number', models.PositiveIntegerField()),
-                ('neighborhood', models.CharField(max_length=255)),
-                ('registration', models.CharField(max_length=100)),
-                ('city', models.CharField(max_length=255)),
-                ('state', models.CharField(max_length=255)),
-                ('zip_code', models.CharField(max_length=8, validators=[properties.validators.validate_zip])),
-                ('acquisition_price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('acquisition_date', models.DateField()),
-                ('actual_value', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('square_meters', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('number_of_bedrooms', models.IntegerField(blank=True, null=True)),
-                ('number_of_bathrooms', models.IntegerField(blank=True, null=True)),
-                ('garage_spaces', models.IntegerField(blank=True, null=True)),
-                ('status', models.PositiveIntegerField(choices=[(0, 'Disponivel'), (1, 'Alugado'), (2, 'Em Manutencao'), (3, 'Vencido')], default=0)),
-                ('sold_price', models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True)),
-                ('sold_date', models.DateField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("description", models.CharField(max_length=255)),
+                (
+                    "property_type",
+                    models.PositiveIntegerField(
+                        choices=[(0, "Terreno"), (1, "Residencial"), (2, "Comercial")],
+                        default=0,
+                    ),
+                ),
+                ("street", models.CharField(max_length=255)),
+                ("number", models.PositiveIntegerField()),
+                ("neighborhood", models.CharField(max_length=255)),
+                ("registration", models.CharField(max_length=100)),
+                (
+                    "zip_code",
+                    models.CharField(
+                        max_length=8, validators=[properties.validators.validate_zip]
+                    ),
+                ),
+                (
+                    "acquisition_price",
+                    models.DecimalField(
+                        decimal_places=2, max_digits=10, blank=True, null=True
+                    ),
+                ),
+                ("acquisition_date", models.DateField(blank=True, null=True)),
+                (
+                    "actual_value",
+                    models.DecimalField(
+                        decimal_places=2, max_digits=10, blank=True, null=True
+                    ),
+                ),
+                ("square_meters", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("number_of_bedrooms", models.IntegerField(blank=True, null=True)),
+                ("number_of_bathrooms", models.IntegerField(blank=True, null=True)),
+                ("garage_spaces", models.IntegerField(blank=True, null=True)),
+                (
+                    "status",
+                    models.PositiveIntegerField(
+                        choices=[
+                            (0, "Disponivel"),
+                            (1, "Alugado"),
+                            (2, "Em Manutencao"),
+                            (3, "Vencido"),
+                        ],
+                        default=0,
+                    ),
+                ),
+                (
+                    "sold_price",
+                    models.DecimalField(
+                        blank=True, decimal_places=2, max_digits=12, null=True
+                    ),
+                ),
+                ("sold_date", models.DateField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'ordering': ['description'],
+                "ordering": ["description"],
             },
         ),
     ]

@@ -30,19 +30,15 @@ class Property(models.Model):
     )
     neighborhood = models.CharField(max_length=255, blank=False, null=False)
     registration = models.CharField(max_length=100, blank=False, null=False)
-    city = models.CharField(max_length=255, blank=False, null=False)
-    state = models.CharField(max_length=255, blank=False, null=False)
     zip_code = models.CharField(
         max_length=8, validators=[validate_zip], blank=False, null=False
     )
     acquisition_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=10, decimal_places=2, blank=True, null=True
     )
-    acquisition_date = models.DateField()
+    acquisition_date = models.DateField(blank=True, null=True)
     actual_value = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=10, decimal_places=2, blank=True, null=True
     )
 
     ## Futuramente fazer um módulo para expansão de casas
