@@ -16,7 +16,7 @@ class Property(models.Model):
         AVAILABLE = 0, "Disponivel"
         RENTED = 1, "Alugado"
         MAINTENANCE = 2, "Em Manutencao"
-        SOLD = 3, "Vencido"
+        SOLD = 3, "Vendido"
 
     id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=255, blank=False, null=False)
