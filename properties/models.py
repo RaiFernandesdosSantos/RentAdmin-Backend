@@ -24,7 +24,8 @@ class Property(models.Model):
         choices=PropertyType.choices, default=PropertyType.LAND, blank=False, null=False
     )
     street = models.CharField(max_length=255, blank=False, null=False)
-    number = models.PositiveIntegerField(
+    number = models.CharField(
+        max_length=6,
         blank=False,
         null=False,
     )
