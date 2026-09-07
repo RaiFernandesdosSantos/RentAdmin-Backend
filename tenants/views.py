@@ -1,6 +1,9 @@
 import tenants.models as models
 from tenants.serializers import TenantSerializer, TenantCreateSerializer
 from rest_framework import generics
+import logging
+
+logger = logging.getLogger("api")
 
 
 class TenantListView(generics.ListAPIView):

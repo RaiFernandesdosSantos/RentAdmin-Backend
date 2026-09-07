@@ -19,9 +19,7 @@ class Tenant(models.Model):
         blank=False,
         null=False,
     )
-    email = models.EmailField(
-        unique=True, validators=[validate_not_blank], blank=False, null=False
-    )
+    email = models.EmailField(unique=True, blank=True, null=True)
     phone_number = models.CharField(
         max_length=20, validators=[validate_not_blank], blank=False, null=False
     )
