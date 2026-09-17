@@ -13,12 +13,12 @@ def create_rent_charges(contract):
     bank_account = 1
 
     if due_date <= contract.start_date:
-        due_date += relativedelta(month=1)
+        due_date += relativedelta(months=1)
 
     while due_date <= contract.end_date:
         transaction.append(
-            Transaction.objects.create(
-                desciption=(
+            Transaction(
+                description=(
                     f" Aluguel - {contract.property.name} - "
                     f"{due_date.strftime('%m/%Y')}"
                 ),
@@ -35,7 +35,7 @@ def create_rent_charges(contract):
             )
         )
 
-        due_date += relativedelta(month=1)
+        due_date += relativedelta(months=1)
 
     Transaction.objects.bulk_create(transaction)
 
