@@ -14,14 +14,17 @@ class BankAccount(models.Model):
 
 
 class ChartAccount(models.Model):
-    class Type(models.IntegerChoices):
-        ENTRIES = 0, "Entradas"
-        EXPENSES = 1, "Saídas"
+    ## Valores em string — o contrato de API do frontend espera
+    ## "ENTRIES" | "EXPENSES" e "DRE_DFC" | "DFC_ONLY" | "DRE_ONLY"
 
-    class ReportClass(models.IntegerChoices):
-        DRE_DFC = 0, "DRE e DFC"
-        DFC_ONLY = 1, "Apenas DFC"
-        DRE_ONLY = 2, "Apenas DRE"
+    class Type(models.TextChoices):
+        ENTRIES = "ENTRIES", "Entradas"
+        EXPENSES = "EXPENSES", "Saídas"
+
+    class ReportClass(models.TextChoices):
+        DRE_DFC = "DRE_DFC", "DRE e DFC"
+        DFC_ONLY = "DFC_ONLY", "Apenas DFC"
+        DRE_ONLY = "DRE_ONLY", "Apenas DRE"
 
     id = models.AutoField(primary_key=True)
     code = models.CharField(max_length=20, blank=False, null=False)
@@ -29,9 +32,17 @@ class ChartAccount(models.Model):
     parent = models.ForeignKey(
         "self", on_delete=models.PROTECT, null=True, blank=True, related_name="children"
     )
-    type = models.PositiveIntegerField(choices=Type.choices, blank=False, null=False)
-    report_classification = models.PositiveIntegerField(
-        choices=ReportClass.choices, blank=False, null=False
+    type = models.CharField(
+        max_length=10,
+        choices=Type.choices,
+        blank=False,
+        null=False,
+    )
+    report_classification = models.CharField(
+        max_length=10,
+        choices=ReportClass.choices,
+        blank=False,
+        null=False,
     )
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -42,20 +53,19 @@ class ChartAccount(models.Model):
 
 
 class Transaction(models.Model):
-    class Status(models.IntegerChoices):
-        PENDING = 0, "Pendente"
-        PAID = 1, "Pago"
-        OVERDUE = 2, "Em atraso"
-        CANCELLED = 3, "Cancelado"
+    ## Valores em string — o contrato de API do frontend espera
+    ## "PENDING" | "PAID" | "OVERDUE" | "CANCELLED" e "NONE" | "MONTHLY" | "ANNUAL"
 
-    ##Depois adicionar recorrencia
+    class Status(models.TextChoices):
+        PENDING = "PENDING", "Pendente"
+        PAID = "PAID", "Pago"
+        OVERDUE = "OVERDUE", "Em atraso"
+        CANCELLED = "CANCELLED", "Cancelado"
 
-    class Recurrence(models.IntegerChoices):
-        NONE = 0, "Não"
-        MONTHLY = 1, "Mensal"
-        ANNUAL = 2, "Anual"
-
-    ## -------------------------------------------
+    class Recurrence(models.TextChoices):
+        NONE = "NONE", "Não"
+        MONTHLY = "MONTHLY", "Mensal"
+        ANNUAL = "ANNUAL", "Anual"
 
     id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=200, blank=False, null=False)
@@ -110,6 +120,12 @@ class Transaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.description
+
+    class Meta:
+        ordering = ["-due_date"]
+
 
 class BankAccountEntries(models.Model):
     id = models.AutoField(primary_key=True)
@@ -133,4 +149,11 @@ class BankAccountEntries(models.Model):
     balance_after = models.DecimalField(
         max_digits=12, decimal_places=2, blank=False, null=False
     )
+    ## Data em que o movimento aconteceu na conta (ex.: data de pagamento)
+    ## — usada pelo extrato e pelo cálculo de saldo inicial do DFC
+    entry_date = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        label = self.transaction.description if self.transaction else "Saldo inicial"
+        return f"{self.bank_account} · {label}"

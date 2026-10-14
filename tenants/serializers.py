@@ -6,6 +6,7 @@ class TenantCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Tenant
         fields = (
+            "id",
             "name",
             "cpf",
             "email",

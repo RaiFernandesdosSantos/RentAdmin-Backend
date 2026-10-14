@@ -17,6 +17,11 @@ class PropertyRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PropertySerializer
     lookup_url_kwarg = "id"
 
+    def get_serializer_class(self):
+        if self.request.method in ("PUT", "PATCH"):
+            return PropertyCreateSerializer
+        return PropertySerializer
+
 
 class PropertyCreateView(generics.CreateAPIView):
     queryset = models.Property.objects.all()

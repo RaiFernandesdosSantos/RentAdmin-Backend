@@ -1,0 +1,3 @@
+descricao,tipo,rua,numero,bairro,cep,matricula,preco_aquisicao,data_aquisicao,valor_atual,area_m2,quartos,banheiros,vagas,status
+Casa Jardim Europa (exemplo),residencial,Rua das Flores,120,Jardim Europa,12345678,12345,250000.00,15/03/2022,300000.00,120.50,3,2,1,alugado
+Terreno Vila Nova (exemplo),terreno,Rua do Campo,55,Vila Nova,87654321,67890,80000,20/06/2021,110000.00,450,,0,,disponivel
